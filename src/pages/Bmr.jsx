@@ -1,0 +1,7 @@
+import React from 'react'
+
+export default function Bmr() {
+  return (
+    <div>Bmr</div>
+  )
+}
