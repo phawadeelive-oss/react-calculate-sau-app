@@ -1,5 +1,9 @@
-import {useState} from "react";
+import { Link } from "react-router";
 import car from "./../assets/car.png";
+import Footer from "../components/Footer";
+import { useState } from "react";
+import Swal from "sweetalert2";
+
 
 export default function CarInstallment() {
   const [name, setName] = useState("");
@@ -13,8 +17,13 @@ export default function CarInstallment() {
     e.preventDefault();
 
     if (!carPrice || !interestRate || carPrice <= 0 || interestRate < 0) {
-      alert("กรุณากรอกราคารถและอัตราดอกเบี้ยให้ถูกต้อง");
-      return;
+        Swal.fire({
+          icon: "warning",
+          title: "คำเตือน",
+          text: "กรุณากรอกราคารถและอัตราดอกเบี้ยให้ถูกต้อง",
+          confirmButtonText: "ตกลง"
+        });
+        return;
     }
 
     const price = Number(carPrice);
@@ -160,6 +169,8 @@ export default function CarInstallment() {
         >
           กลับหน้าหลัก
         </a>
+        {/* แสดงส่วน Footer */}
+        <Footer />
       </div>
     </>
   );
