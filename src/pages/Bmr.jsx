@@ -1,10 +1,12 @@
-import { useState } from "react";
 import bmr from "./../assets/bmr.png";
+import Footer from "../components/Footer";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function Bmr() {
-  const [weight, setWeight] = useState("");
-  const [height, setHeight] = useState("");
-  const [age, setAge] = useState("");
+  const [weight, setWeight] = useState("0");
+  const [height, setHeight] = useState("0");
+  const [age, setAge] = useState("0");
   const [gender, setGender] = useState("male");
   const [bmrResult, setBmrResult] = useState("0.00");
   const [bmrStatus, setBmrStatus] = useState("");
@@ -13,8 +15,14 @@ export default function Bmr() {
     e.preventDefault();
 
     if (!weight || !height || !age || weight <= 0 || height <= 0 || age <= 0) {
-      alert("กรุณากรอกน้ำหนัก ส่วนสูง และอายุให้ถูกต้อง");
-      return;
+        //V
+          Swal.fire({
+            icon: "warning",
+            title: "คำเตือน",
+            text: "กรุณากรอกน้ำหนักส่วนสูงและอายุให้ถูกต้องนะจ๊ะ",
+            confirmButtonText: "ตกลง"
+          });
+          return; //อย่าลืมใส่ return เพื่อหยุดการทำงานของฟังก์ชันถ้าข้อมูลไม่ถูกต้อง
     }
 
     let bmrValue = 0;
@@ -55,9 +63,9 @@ export default function Bmr() {
   };
 
   const handleReset = () => {
-    setWeight("");
-    setHeight("");
-    setAge("");
+    setWeight("0");
+    setHeight("0");
+    setAge("0");
     setGender("male");
     setBmrResult("0.00");
     setBmrStatus("");
@@ -80,7 +88,7 @@ export default function Bmr() {
             type="number"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
-            placeholder="เช่น 65"
+            placeholder="น้ำหนัก"
             className="border border-gray-300 p-2 rounded-md
                        placeholder:font-kanit mt-1"
           />
@@ -170,6 +178,8 @@ export default function Bmr() {
         >
           กลับหน้าหลัก
         </a>
+        {/* แสดงส่วน Footer */}
+        <Footer />
       </div>
     </>
   );

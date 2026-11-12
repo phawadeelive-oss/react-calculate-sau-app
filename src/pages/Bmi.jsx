@@ -1,25 +1,36 @@
-import { useState } from "react";
+import { Link } from "react-router";
 import bmi from "./../assets/bmi.png";
+import Footer from "../components/Footer";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function Bmi() {
-  
-  const [weight, setWeight] = useState("");
-  const [height, setHeight] = useState("");
-  const [bmiResult, setBmiResult] = useState("0.00");
-  const [bmiStatus, setBmiStatus] = useState("");
+  //สร้าง state ด้วย useState
 
- 
+  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('');
+  const [bmiValue, setBmiValue] = useState('0.00');
+  const [bmiStatus, setBmiStatus] = useState('');
+
+  //ฟังก์ชันคำนวณค่า BMI 
   const calculateBmi = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
+    //V
     if (!weight || !height || weight <= 0 || height <= 0) {
-      alert("กรุณากรอกน้ำหนักและส่วนสูงให้ถูกต้อง");
-      return;
+      Swal.fire({
+        icon: "warning",
+        title: "คำเตือน",
+        text: "กรุณากรอกน้ำหนักและส่วนสูงให้ถูกต้องนะจ๊ะ",
+        confirmButtonText: "ตกลง"
+      });
+      return; //อย่าลืมใส่ return เพื่อหยุดการทำงานของฟังก์ชันถ้าข้อมูลไม่ถูกต้อง
     }
 
-    const heightInMeters = height / 100;
-    const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(2);
-    setBmiResult(bmiValue);
+    const w = Number(weight);
+    const h = Number(height);
+    const bmiResult = w /((h/100)**2)
+    setBmiValue(bmiResult.toFixed(2));
 
     if (bmiValue < 18.5) {
       setBmiStatus("น้ำหนักน้อย / ผอม");
@@ -36,10 +47,10 @@ export default function Bmi() {
 
   // 3. ฟังก์ชันรีเซ็ตค่า
   const handleReset = () => {
-    setWeight("");
-    setHeight("");
-    setBmiResult("0.00");
-    setBmiStatus("");
+    setWeight('');
+    setHeight('');
+    setBmiValue('0.00');
+    setBmiStatus('');
   };
 
   return (
@@ -77,7 +88,7 @@ export default function Bmi() {
           />
 
           <button
-            type="submit"
+            onClick={calculateBmi}
             className="w-full bg-blue-600 mt-5 p-2 rounded-md
                        text-white font-kanit font-bold cursor-pointer
                        hover:bg-blue-800"
@@ -100,7 +111,7 @@ export default function Bmi() {
         <div className="w-full mt-6 text-center">
           <p className="font-kanit text-lg font-bold">
             ค่า BMI ที่คำนวณได้:{" "}
-            <span className="text-blue-600">{bmiResult}</span>
+            <span className="text-blue-600">{bmiValue}</span>
           </p>
           {bmiStatus && (
             <p className="font-kanit text-md font-semibold mt-2 text-gray-700">
@@ -118,6 +129,8 @@ export default function Bmi() {
         >
           กลับหน้าหลัก
         </a>
+        {/* แสดงส่วน Footer */}
+        <Footer />
       </div>
     </>
   );
